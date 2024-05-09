@@ -4,3 +4,4 @@ uvicorn
 python-multipart
 regex
 psycopg2
+pydantic

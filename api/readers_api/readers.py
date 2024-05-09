@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List, Dict
 from database.readersservice import *
 import re
@@ -15,7 +15,7 @@ def mail_checker(email):
 
 class Reader(BaseModel):
     name: str
-    email: str
+    email: EmailStr
     password: str
     birthday: str
     fav_genre: str | None = None
@@ -25,7 +25,7 @@ class Reader(BaseModel):
 readers_router = APIRouter(tags=["Управление читателями"], prefix="/readers")
 
 
-@readers_router.post("/api/registration")
+@readers_router.post("/api/register")
 async def register_reader(reader_model: Reader):
     reader_data = dict(reader_model)
     mail_validation = mail_checker(reader_model.email)
@@ -37,7 +37,6 @@ async def register_reader(reader_model: Reader):
             return {"status": 0, "message": e}
 
     return {"status": 0, "message": "Invalid email"}
-
 
 
 @readers_router.get("/api/reader")
@@ -71,5 +70,3 @@ async def delete_reader_post(reader_id: int):
         return {"status": 1, "message": "Юзер удален"}
     except:
         return {"status": 0, "message": "Не удалось удалить юзера"}
-
-
