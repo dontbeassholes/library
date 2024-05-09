@@ -14,12 +14,12 @@ def check_reader_db(name, email):
     return True
 
 
-def register_reader_db(name, email, password, birthday, fav_genre=None,  about=None):
+def register_reader_db(name, email, password, birthday, fav_genre=None,  about=None, admin_status=False):
     db = next(get_db())
     checker = check_reader_db(name, email)
     if checker:
         new_reader = Reader(name=name, email=email, about=about, password=password, reg_date=datetime.now(),
-                            birthday=birthday, fav_genre=fav_genre
+                            birthday=birthday, fav_genre=fav_genre, admin_status=admin_status
                             )
         db.add(new_reader)
         db.commit()

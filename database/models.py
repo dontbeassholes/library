@@ -13,6 +13,7 @@ class Reader(Base):
     reg_date = Column(DateTime)
     birthday = Column(Date, nullable=False)
     fav_genre = Column(String, nullable=True)
+    admin_status = Column(Boolean, default=False)
 
 
 class Genre(Base):
