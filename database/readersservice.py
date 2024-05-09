@@ -3,17 +3,6 @@ from database import get_db
 from datetime import datetime
 
 
-def register_reader_db(name, email, password, birthday, fav_genre=None,  about=None):
-    db = next(get_db())
-    checker = check_reader_db(name, email)
-    if checker == True:
-        new_reader = Reader(name=name, email=email, about=about, password=password, reg_date=datetime.now(), birthday=birthday, fav_genre=fav_genre)
-        db.add(new_reader)
-        db.commit()
-        return new_reader.id
-    return checker
-
-
 def check_reader_db(name, email):
     db = next(get_db())
     checker_name = db.query(Reader).filter_by(name=name).first()
@@ -23,6 +12,19 @@ def check_reader_db(name, email):
     elif checker_email:
         return "Почта занята"
     return True
+
+
+def register_reader_db(name, email, password, birthday, fav_genre=None,  about=None):
+    db = next(get_db())
+    checker = check_reader_db(name, email)
+    if checker:
+        new_reader = Reader(name=name, email=email, about=about, password=password, reg_date=datetime.now(),
+                            birthday=birthday, fav_genre=fav_genre
+                            )
+        db.add(new_reader)
+        db.commit()
+        return new_reader.id
+    return checker
 
 
 def check_reader_password_db(login, password):
@@ -73,7 +75,7 @@ def change_reader_data_db(reader_id, changeable_info, new_data):
                 db.commit()
                 return True
         except:
-            return "вы не можете поменять информацию сейчас"
+            return "вы не можете поменять эту информацию"
     return False
 
 
@@ -91,12 +93,23 @@ def delete_reader_db(reader_id):
 def get_user_read_books_db(reader_id):
     db = next(get_db())
     reader = db.query(Reader).filter_by(id=reader_id).first()
-    if reader:
-        return reader.read_books
+    if any(book.read_status for book in reader.user_book_status):
+        return 'Вы прочитали книгу!'
     return "пользователь не прочел ни одной книги"
-# спросить нужно ли мне добавить в модель ридер рид букс
 
-
+# если выйдет ошибка то используй это!
+# def get_user_read_books_db(reader_id):
+#     db = next(get_db())
+#     reader = db.query(Reader).filter_by(id=reader_id).first()
+#     if reader:
+#         read_books = db.query(Book).filter_by(user_book_status=reader_id, read_status=True).all()
+#         if read_books:
+#             return 'Вы прочитали книгу!'
+#         return "Пользователь не прочел ни одной книги"
+#     return "Пользователь не найден"
 def get_user_reviews_db(reader_id):
     db = next(get_db())
-    pass
+    reader = db.query(Reader).filter_by(id=reader_id).first()
+    if reader:
+        return reader.review_text
+    return "вы не оставили ни один отзыв"
