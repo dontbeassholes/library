@@ -14,7 +14,7 @@ def create_book_db(reader_id, title, author, genre, description=None, photo_to_p
         return True
 
 
-def get_book_db(book_id):
+def get_book_by_id_db(book_id):
     db = next(get_db())
     book_to_get = db.query(Book).filter_by(id=book_id).first()
     if book_to_get:
@@ -22,7 +22,7 @@ def get_book_db(book_id):
     return False
 
 
-def get_all_books():
+def get_all_books_db():
     db = next(get_db())
     all_books = db.query(Book).all()
     return [i for i in all_books]
