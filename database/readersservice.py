@@ -3,17 +3,6 @@ from database import get_db
 from datetime import datetime
 
 
-def check_reader_db(name, email):
-    db = next(get_db())
-    checker_name = db.query(Reader).filter_by(name=name).first()
-    checker_email = db.query(Reader).filter_by(email=email).first()
-    if checker_name:
-        return "Юзернейм занят"
-    elif checker_email:
-        return "Почта занята"
-    return True
-
-
 def register_reader_db(name, email, password, birthday, fav_genre=None,  about=None, admin_status=False):
     db = next(get_db())
     checker = check_reader_db(name, email)
@@ -25,6 +14,18 @@ def register_reader_db(name, email, password, birthday, fav_genre=None,  about=N
         db.commit()
         return new_reader.id
     return checker
+
+def check_reader_db(name, email):
+    db = next(get_db())
+    checker_name = db.query(Reader).filter_by(name=name).first()
+    checker_email = db.query(Reader).filter_by(email=email).first()
+    if checker_name:
+        return "Юзернейм занят"
+    elif checker_email:
+        return "Почта занята"
+    return True
+
+
 
 
 def check_reader_password_db(login, password):

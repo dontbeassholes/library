@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import List, Dict
 from database.readersservice import *
 import re
@@ -7,15 +7,9 @@ import re
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 
-def mail_checker(email):
-    if re.fullmatch(regex, email):
-        return True
-    return False
-
-
 class Reader(BaseModel):
     name: str
-    email: EmailStr
+    email: str
     password: str
     birthday: str
     fav_genre: str | None = None
@@ -37,6 +31,12 @@ async def register_reader(reader_model: Reader):
             return {"status": 0, "message": e}
 
     return {"status": 0, "message": "Invalid email"}
+
+
+def mail_checker(email):
+    if re.fullmatch(regex, email):
+        return True
+    return False
 
 
 @readers_router.get("/api/reader")
