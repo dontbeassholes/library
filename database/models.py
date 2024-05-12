@@ -43,7 +43,6 @@ class Review(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
     reader_id = Column(Integer, ForeignKey('readers.id'))
     book_id = Column(Integer, ForeignKey('books_api.id'))
-    rating = Column(Integer, ForeignKey('books_api.rating'))
     review_text = Column(String, nullable=True)
 
     book_fk = relationship(Book, lazy='subquery')
