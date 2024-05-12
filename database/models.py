@@ -10,8 +10,8 @@ class Reader(Base):
     email = Column(String, nullable=False, unique=True)
     about = Column(String, nullable=True, unique=False)
     password = Column(String, nullable=False)
-    reg_date = Column(DateTime)
-    birthday = Column(Date, nullable=False)
+    reg_date = Column(String)
+    birthday = Column(String, nullable=False)
     fav_genre = Column(String, nullable=True)
     admin_status = Column(Boolean, default=False)
 

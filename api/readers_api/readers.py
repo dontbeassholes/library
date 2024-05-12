@@ -14,6 +14,7 @@ class Reader(BaseModel):
     birthday: str
     fav_genre: str | None = None
     about: str | None = None
+    admin_status: bool = False
 
 
 readers_router = APIRouter(tags=["Управление читателями"], prefix="/readers")

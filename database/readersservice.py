@@ -15,6 +15,7 @@ def register_reader_db(name, email, password, birthday, fav_genre=None,  about=N
         return new_reader.id
     return checker
 
+
 def check_reader_db(name, email):
     db = next(get_db())
     checker_name = db.query(Reader).filter_by(name=name).first()
