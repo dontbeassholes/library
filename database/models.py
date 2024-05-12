@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean, Date
-from sqlalchemy import relationship
+from sqlalchemy.orm import relationship
 from database import Base
 
 
@@ -23,7 +23,7 @@ class Genre(Base):
 
 
 class Book(Base):
-    __tablename__ = 'books'
+    __tablename__ = 'books_api'
     id = Column(Integer, autoincrement=True, primary_key=True)
     title = Column(String, nullable=False)
     author = Column(String, nullable=False)
@@ -38,18 +38,15 @@ class Book(Base):
     reader_fk = relationship(Reader, lazy='subquery')
 
 
-
 class Review(Base):
     __tablename__ = 'review'
     id = Column(Integer, autoincrement=True, primary_key=True)
     reader_id = Column(Integer, ForeignKey('readers.id'))
-    book_id = Column(Integer, ForeignKey('books.id'))
-    rating = Column(Integer, ForeignKey('books.rating'))
+    book_id = Column(Integer, ForeignKey('books_api.id'))
+    rating = Column(Integer, ForeignKey('books_api.rating'))
     review_text = Column(String, nullable=True)
 
-    reader_fk = relationship(Book, lazy='subquery')
     book_fk = relationship(Book, lazy='subquery')
-    rating_fk = relationship(Book, lazy='subquery')
 
 
 

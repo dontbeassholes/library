@@ -2,7 +2,7 @@ from fastapi import Request, Body, UploadFile, APIRouter
 from database.booksservice import *
 from urllib import request
 
-books_router = APIRouter(prefix="/books",
+books_router = APIRouter(prefix="/books_api",
                          tags=["Управление книгами"])
 
 
@@ -24,7 +24,7 @@ async def get_book_by_id(book_id: int):
     return {"status": 0, "message": "Книга не найдена"}
 
 
-@books_router.get("/api/books")
+@books_router.get("/api/books_api")
 async def get_all_books():
     books = get_all_books_db()
     return books
